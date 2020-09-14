@@ -19,7 +19,7 @@ describe Board do
     end
 
     it 'returns nil if no space is available in column' do
-      6.times do |row|
+      (0..5).each do |row|
         grid[row][2] = 'X'
       end
       expect(board.find_avail_row(2)).to be_nil
@@ -35,25 +35,35 @@ describe Board do
 
   describe '#four_consecutive?' do
     it 'returns true if there are four consecutive tiles in a row' do
-      3.upto(6) do |col|
+      (3..6).each do |col|
         grid[1][col] = 'X'
       end
-      expect(board.four_consecutive?(grid)).to be_truthy
+      expect(board.four_consecutive?).to be_truthy
     end
 
     it 'returns true if there are four consecutive tiles in a column' do
-      2.upto(5) do |row|
+      (2..5).each do |row|
         grid[row][4] = 'O'
       end
-      expect(board.four_consecutive?(grid.transpose)).to be_truthy
+      expect(board.four_consecutive?).to be_truthy
     end
 
     it 'returns true if there are four consecutive tiles in a diagonal' do
-      2.upto(5) do |row|
-        grid[row][4] = 'O'
+      (1..4).each do |num|
+        grid[num][num] = 'O'
       end
-      expect(board.four_consecutive?(grid.transpose)).to be_truthy
+      expect(board.four_consecutive?).to be_truthy
     end
   end
 
+  describe '#full?' do
+    it 'returns true if board has no blank spaces' do
+      board.grid = [%w[X X Y], [1, 3, 5]]
+      expect(board.full?).to be_truthy
+    end
+
+    it 'returns false if board contains any blank spaces' do
+      expect(board.full?).to be false
+    end
+  end
 end
